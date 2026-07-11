@@ -1,4 +1,4 @@
-# PTEC Abaqus
+# Prueba Técnica Abaqus
 
 ## Stack
 
