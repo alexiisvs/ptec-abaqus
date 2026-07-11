@@ -5,7 +5,7 @@ function formatUsd(value) {
   return `$${Number(value).toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 }
 
-export default function PortfolioValueChart({ data }) {
+export default function PortfolioValueChart({ data, visiblePortfolioIds }) {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -15,6 +15,8 @@ export default function PortfolioValueChart({ data }) {
 
     const chart = echarts.init(chartRef.current);
     const dates = data.portfolios?.[0]?.series.map((item) => item.date) || [];
+    const portfolios =
+      data.portfolios?.filter((portfolio) => visiblePortfolioIds.includes(String(portfolio.id))) || [];
 
     chart.setOption({
       color: ["#1f7a8c", "#bf6f30"],
@@ -43,7 +45,7 @@ export default function PortfolioValueChart({ data }) {
         },
       },
       series:
-        data.portfolios?.map((portfolio) => ({
+        portfolios.map((portfolio) => ({
           name: portfolio.name,
           type: "line",
           smooth: true,
@@ -59,7 +61,7 @@ export default function PortfolioValueChart({ data }) {
       resizeObserver.disconnect();
       chart.dispose();
     };
-  }, [data]);
+  }, [data, visiblePortfolioIds]);
 
   return <div className="chart-canvas" ref={chartRef} />;
 }
