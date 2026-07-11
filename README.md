@@ -5,13 +5,26 @@
 - Backend: Django + Django REST Framework
 - Base de datos: PostgreSQL via Docker Compose
 - Frontend: React + Vite
-- Gráficos: ECharts
+- Graficos: ECharts
 - ETL: management command de Django
 - Fuente de datos: `data/datos.xlsx`
 
 ## Setup
 
-### Backend
+### Backend en Windows PowerShell
+
+```powershell
+docker compose up -d db
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
+python backend\manage.py migrate
+python backend\manage.py load_portfolio_data data\datos.xlsx
+python backend\manage.py runserver
+```
+
+### Backend en Linux/macOS
 
 ```bash
 docker compose up -d db
@@ -24,7 +37,16 @@ python backend/manage.py load_portfolio_data data/datos.xlsx
 python backend/manage.py runserver
 ```
 
-### Frontend
+### Frontend en Windows PowerShell
+
+```powershell
+cd frontend
+npm install
+Copy-Item .env.example .env
+npm run dev
+```
+
+### Frontend en Linux/macOS
 
 ```bash
 cd frontend
